@@ -109,6 +109,18 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 		?>
 		 
 		<div class="form-field">
+			<label><?php _e( 'Goal', PBF_WC_TXT ); ?></label>
+			<input type="number" id="crowd_funding_goal" name="crowd_funding_goal" />
+		</div>
+		<div class="form-field">
+			<label><?php _e( 'Start time', PBF_WC_TXT ); ?></label>
+			<input type="datetime-local" id="start_crowd_funding_time" name="start_crowd_funding_time" />
+		</div>
+		<div class="form-field">
+			<label><?php _e( 'End time', PBF_WC_TXT ); ?></label>
+			<input type="datetime-local" id="end_crowd_funding_time" name="end_crowd_funding_time" />
+		</div>
+		<div class="form-field">
 			<label><?php _e( 'Brand Logo', PBF_WC_TXT ); ?></label>
 			<div id="product_brands_thumbnail" style="float: left; margin-right: 10px;"><img src="<?php echo esc_url( wc_placeholder_img_src() ); ?>" width="60px" height="60px" /></div>
 			<div style="line-height: 60px;">
