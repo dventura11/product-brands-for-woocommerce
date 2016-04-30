@@ -182,13 +182,37 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 	public function edit_category_fields( $term ) {
  
 		$thumbnail_id = absint( get_woocommerce_term_meta( $term->term_id, 'thumbnail_id', true ) );
-
+		$crowd_funding_goal = get_woocommerce_term_meta( $term->term_id, 'crowd_funding_goal' );
+		$start_crowd_funding_time = get_woocommerce_term_meta( $term->term_id, 'start_crowd_funding_time' );
+		$end_crowd_funding_time = get_woocommerce_term_meta( $term->term_id, 'end_crowd_funding_time' );
+                       
 		if ( $thumbnail_id ) {
 			$image = wp_get_attachment_thumb_url( $thumbnail_id );
 		} else {
 			$image = wc_placeholder_img_src();
 		}
 		?> 
+        <tr class="form-field">            
+			<th scope="row" valign="top">
+			<label><?php _e( 'Goal', PBF_WC_TXT ); ?></label>
+            </td><td>
+			     <input type="number" id="crowd_funding_goal" name="crowd_funding_goal" value="<?= $crowd_funding_goal;?>"/>
+            </td>
+		</tr>
+		<tr class="form-field">
+            <th scope="row" valign="top">
+                <label><?php _e( 'Start time', PBF_WC_TXT ); ?></label>
+            </td><td>
+			     <input type="datetime-local" id="start_crowd_funding_time" name="start_crowd_funding_time" value="<?= $start_crowd_funding_time;?>" />
+            </td>
+		</tr>
+		<tr class="form-field">
+            <th scope="row" valign="top">
+			     <label><?php _e( 'End time', PBF_WC_TXT ); ?></label>
+            </td><td>
+			     <input type="datetime-local" id="end_crowd_funding_time" name="end_crowd_funding_time" value="<?= $end_crowd_funding_time;?>" />
+            </td>
+		</tr>
 		<tr class="form-field">
 			<th scope="row" valign="top"><label><?php _e( 'Thumbnail', 'woocommerce' ); ?></label></th>
 			<td>
@@ -247,9 +271,27 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 	 * @param mixed $term_id Term ID being saved
 	 */
 	public function save_category_fields( $term_id, $tt_id = '', $taxonomy = '' ) {
-		if ( isset( $_POST['product_brands_thumbnail_id'] ) && 'product_brands' === $taxonomy ) {
+                
+        if ( 'product_brands' !== $taxonomy ) {
+            return;            
+        }
+        
+		if ( isset( $_POST['product_brands_thumbnail_id'] ) ) {
 			update_woocommerce_term_meta( $term_id, 'thumbnail_id', absint( $_POST['product_brands_thumbnail_id'] ) );
 		}
+        
+		if ( isset( $_POST['crowd_funding_goal'] ) ) {
+			update_woocommerce_term_meta( $term_id, 'crowd_funding_goal', $_POST['crowd_funding_goal']);
+		}
+        
+        if ( isset( $_POST['start_crowd_funding_time'] ) ) {
+			update_woocommerce_term_meta( $term_id, 'start_crowd_funding_time', $_POST['start_crowd_funding_time']);
+		}
+        
+        if ( isset( $_POST['end_crowd_funding_time'] ) ) {
+			update_woocommerce_term_meta( $term_id, 'end_crowd_funding_time', $_POST['end_crowd_funding_time']);
+		}
+        
 	}	
 }
 ?>
