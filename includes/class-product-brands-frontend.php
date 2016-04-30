@@ -3,7 +3,8 @@
 if ( ! defined( 'WPINC' ) ) { die; }
  
 class Product_Brands_For_WooCommerce_FrontEnd {
-	public function __construct(){
+	public function __construct(){        
+        add_action( 'woocommerce_after_shop_loop_item', array( $this, 'display_crowdfunding_item_info' ) );
 		add_shortcode('pbf_wc' , array($this,'manage_shortcode'));
 		add_shortcode('pbf_wc_list' , array($this,'manage_list_shortcode'));
 		add_shortcode('pbf_wc_grid' , array($this,'manage_grid_shortcode'));
@@ -183,5 +184,32 @@ class Product_Brands_For_WooCommerce_FrontEnd {
 
 		return ob_get_clean();
 	}
+    
+    /**
+    * Adds product corwdfunding information
+    **/
+    function display_crowdfunding_item_info() {
+
+        global $product;
+        
+        $term = get_terms( array(
+            'taxonomy' => 'product_brands',
+            'hide_empty' => false,
+        ) )[0];
+                
+		
+        $crowd_funding_goal = get_woocommerce_term_meta( $term->term_id, 'crowd_funding_goal' );        
+        
+        wc_get_template( 'crowdfunding-item-info.php',
+            array (
+                'name' => $term->name,
+                'crowd_funding_goal' => $crowd_funding_goal
+            ),
+            'woocommerce/product_brands' ,
+            untrailingslashit( plugin_dir_path( dirname( __FILE__ ) ) ) . '/templates/' 
+        );
+                
+    }    
+    
 }
 ?>
