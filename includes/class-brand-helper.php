@@ -55,13 +55,10 @@ class BrandHelper {
 	
 	public function getTimeLeft( $brandId ) {
 		$endTime = get_woocommerce_term_meta( $brandId, 'end_crowd_funding_time' );                                
-    /*
-        //hay que hacer que aqui pueda tomar los dias
-        $restedTime = strtotime($end_crowd_funding_time);
-        $restedTime = $now - $restedTime;
-        $restedTime = floor($restedTime/(60*60*24));
-    */  
-		return $endTime;
+        	$seconds=strtotime($endTime) - strtotime('now');
+        	$days_left=intval($seconds/60/60/24);
+ 
+		return $days_left;
 	}
     
 }
