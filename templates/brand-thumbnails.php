@@ -15,47 +15,12 @@
 		$image_url = wp_get_attachment_image($image,$thumbnail, array('alt' => $brand->name)); 
 
 		if ( ! $thumbnail ) $thumbnail = woocommerce_placeholder_img_src();    
-            
-        global $wpdb;
-        
-		$crowd_funding_goal = get_woocommerce_term_meta( $brand->term_id, 'crowd_funding_goal' );        
-		$end_crowd_funding_time = get_woocommerce_term_meta( $brand->term_id, 'end_crowd_funding_time' );
-        $restedTime = $end_crowd_funding_time;                
-    /*
-        //hay que hacer que aqui pueda tomar los dias
-        $restedTime = strtotime($end_crowd_funding_time);
-        $restedTime = $now - $restedTime;
-        $restedTime = floor($restedTime/(60*60*24));
-    */     
-        $total = $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT 
-                    SUM(meta_value)
-                FROM 
-                    wp_woocommerce_order_itemmeta
-                WHERE 
-                    meta_key = '_line_total'
-                    AND order_item_id IN (
-                        SELECT 
-                            order_item_id
-                        FROM 
-                            wp_woocommerce_order_itemmeta
-                        WHERE 
-                            meta_key = '_product_id'
-                            AND META_VALUE IN (
-                                SELECT 
-                                    object_id
-                                FROM 
-                                    wp_term_relationships wptr
-                                WHERE 
-                                    wptr.term_taxonomy_id = %d                            
-                        )
-                    )
-                   ",
-                    $brand->term_id
-            )
-        ); 
-        $percent =  ($total/$crowd_funding_goal)*100;
+                
+        $brandHelper = new BrandHelper();
+        $crowd_funding_goal = $brandHelper->getGoal( $brand->term_id );
+        $percent = $brandHelper->getPercent( $brand->term_id );
+        $restedTime = $brandHelper->getTimeLeft( $brand->term_id );
+		            
         ?>
         
         <article class="krown-id-item" style="position: absolute; left: 0px; top: 0px;">
