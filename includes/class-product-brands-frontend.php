@@ -196,14 +196,14 @@ class Product_Brands_For_WooCommerce_FrontEnd {
             'taxonomy' => 'product_brands',
             'hide_empty' => false,
         ) )[0];
-                
 		
-        $crowd_funding_goal = get_woocommerce_term_meta( $term->term_id, 'crowd_funding_goal' );        
-        
+        $crowd_funding_discount = get_woocommerce_term_meta( $term->term_id, 'crowd_funding_discount' );        
+        $priceGoal = $product->price;
+		$priceGoal -= $product->price * ($crowd_funding_discount/100);		
         wc_get_template( 'crowdfunding-item-info.php',
             array (
                 'name' => $term->name,
-                'crowd_funding_goal' => $crowd_funding_goal
+                'crowd_funding_price_goal' => $priceGoal
             ),
             'woocommerce/product_brands' ,
             untrailingslashit( plugin_dir_path( dirname( __FILE__ ) ) ) . '/templates/' 
