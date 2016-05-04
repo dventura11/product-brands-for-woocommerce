@@ -6,6 +6,7 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 	public function __construct(){
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
+		add_action( 'wp_ajax_apply_discount', 'applyDiscount' );
 		add_filter( 'manage_edit-product_brands_columns', array( $this, 'product_cat_columns' ) );
 		add_filter( 'manage_product_brands_custom_column', array( $this, 'product_cat_column' ), 10, 3 );
 		add_action( 'product_brands_add_form_fields', array( $this, 'add_category_fields' ) );
@@ -190,7 +191,10 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 		$start_crowd_funding_time = get_woocommerce_term_meta( $term->term_id, 'start_crowd_funding_time' );
 		$end_crowd_funding_time = get_woocommerce_term_meta( $term->term_id, 'end_crowd_funding_time' );
 		$crowd_funding_discount = get_woocommerce_term_meta( $term->term_id, 'crowd_funding_discount' );
-                       
+		
+		$brandHelper = new BrandHelper();
+        $restedTime = $brandHelper->getTimeLeft( $term->term_id );		
+		                       
 		if ( $thumbnail_id ) {
 			$image = wp_get_attachment_thumb_url( $thumbnail_id );
 		} else {
@@ -275,8 +279,44 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 				<div class="clear"></div>
 			</td>
 		</tr>
-		<?php
+		
+		<?php if ( $restedTime == 0 ) { ?>	
+		
+			<tr class="form-field">            
+				<th scope="row" valign="top">
+				<label><?php _e( 'Apply Discount', PBF_WC_TXT ); ?></label>
+				</td><td>
+					<input type="checkbox" id="crowd_funding_apply_discount" name="crowd_funding_apply_discount"/>
+				</td>
+			</tr>
+			
+			<!--
+			<tr class="form-field">
+				<td>
+					<p class="submit">
+						<input onclick="callApplyDiscount();"; type="button" name="applyDiscount" id="applyDiscount" class="button button-primary" value="Aplicar descuento">
+					</p>
+					
+					<script type="text/javascript" >
+						function callApplyDiscount() {
+							jQuery.post(
+								ajaxurl, 
+								{
+									'action': 'apply_discount',
+									'data':   'foobarid'
+								}, 
+								function(response){
+									alert('The server responded: ' + response);
+								}
+							);
+						}
+					</script>			
+				</td>
+			</tr>
+			-->
+		<?php } 
 	}
+	
 	/**
 	 * save_category_fields function.
 	 *
@@ -307,7 +347,17 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 		if ( isset( $_POST['crowd_funding_discount'] ) ) {
 			update_woocommerce_term_meta( $term_id, 'crowd_funding_discount', $_POST['crowd_funding_discount']);
 		}
+		
+		if ( isset( $_POST['crowd_funding_apply_discount'] ) ) {
+			$this->applyDiscount( $term_id );
+		}
+		
         
+	}
+
+	public function applyDiscount( $term_id ) {
+		$brandHelper = new BrandHelper();
+		$brandHelper->applyDiscount( $term_id );
 	}	
 }
 ?>

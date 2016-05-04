@@ -41,25 +41,35 @@
 
                 <section class="content"><?= $brand->name ?></section>
 
-                <aside class="meta">
+                <?php
+                    if ($restedTime > 0) {
+                ?>
+                    <aside class="meta">
 
-                    <div class="krown-pie small" data-color="">
-                        <div class="holder">
-                            <span class="value" data-percent="<?= $percent ?>">
-                                <?= $percent ?><sup>%</sup>
-                            </span>
-                            <div class="pie-holder">
-                                <canvas class="pie-canvas" width="122" height="122"></canvas>
+                        <div class="krown-pie small" data-color="">
+                            <div class="holder">
+                                <span class="value" data-percent="<?= $percent ?>">
+                                    <?= $percent ?><sup>%</sup>
+                                </span>
+                                <div class="pie-holder">
+                                    <canvas class="pie-canvas" width="122" height="122"></canvas>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <ul>
-                        <li><span>$<?= $crowd_funding_goal ?></span> Pledged</li>
-                        <li><span><?= $restedTime ?></span> Días faltantes</li>
-                    </ul>
+                        
+                        <ul>
+                            <li><span>$<?= $crowd_funding_goal ?></span> Pledged</li>
+                            <li><span><?= $restedTime ?></span> Días faltantes</li>
+                        </ul>
 
-                </aside>
+                    </aside>
+                <?php 
+                    } else { 
+                ?>      
+                    <h4>Finalizado.</h4>                    
+                <?php 
+                    } 
+                ?>
 
             </div>
 	   </article>

@@ -58,8 +58,55 @@ class BrandHelper {
         	$seconds=strtotime($endTime) - strtotime('now');
         	$days_left=intval($seconds/60/60/24);
  
-		return $days_left;
+		return $days_left >=0 ? $days_left : 0;
 	}
+    
+    public function applyDiscount( $brandId ) {
+        
+		global $wpdb;
+		
+        $discount =  get_woocommerce_term_meta( $brandId, 'crowd_funding_discount' );
+        
+        $products = $wpdb->get_col (
+            $wpdb->prepare (
+                "SELECT 
+                    order_item_id
+                FROM 
+                    wp_woocommerce_order_itemmeta im2
+                WHERE 
+                    im2.meta_key = '_product_id'
+                    AND META_VALUE IN (
+                        SELECT 
+                            object_id
+                        FROM 
+                            wp_term_relationships wptr
+                        WHERE 
+                            wptr.term_taxonomy_id = %d
+                        )",
+                $brandId
+            )
+        );
+                            
+        foreach ( $products as $id ) {
+            $wpdb->query (
+                $wpdb->prepare (
+                    "update
+                        wp_woocommerce_order_itemmeta im
+                    set                    
+                        im.meta_value = im.meta_value - ( (im.meta_value * (%d / 100) ) )
+                    WHERE 
+                        im.meta_key = '_line_total' 
+                        AND order_item_id = %d
+                    ",
+                    $discount,
+                    $id                   
+                )
+            );            
+        } 
+        
+		
+		
+    }
     
 }
 
