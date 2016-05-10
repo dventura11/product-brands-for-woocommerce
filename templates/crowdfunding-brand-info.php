@@ -1,49 +1,96 @@
-<?php
-/*
- * Display_crowdfunding_brand_info
- */
-?>
-
-<div class="id-widget-wrap nofloat">	<div class="id-widget id-full" data-projectid="13">
-<div class="id-product-infobox">
-<div class="panel clearfix"><div class="product-wrapper clearfix">
-<div class="pledge">
-<h2 class="id-product-title"><a href="#"><?= $crowd_funding_brand_title ?></a></h2>
-<div class="progress-wrapper"><div class="krown-pie large" data-color="#43b3cf"><div class="holder"><span class="value" data-percent="<?= $percent ?>"> <?= $percent ?> <sup>%</sup></span><div class="pie-holder"><canvas class="pie-canvas" width="274" height="274"></canvas></div></div></div></div>
-<!-- end progress wrapper --> 
+<div id="project-container" class="krown-tabs responsive-on clearfix">
+   <div class="contents clearfix">
+      <div id="description" style="display: block;">
+         <div class="project-header">
+            <div class="mini">
+               <ul class="slides">
+                  <li class="slide">
+                      <img src="<?=$crowd_funding_brand_image ?>" width="845" alt="">
+                  </li>
+               </ul>
+            </div>
+         </div>
+         <div class="project-content">
+            <aside class="share-buttons clearfix">
+               <p>Share this project</p>
+               <div class="holder clearfix">
+                  <a target="_blank" class="btn-twitter" href="https://twitter.com/home?status=Audio+Playlist+http%3A%2F%2Fbacker-demo.krownthemes.com%2Fprojects%2Faudio-playlist%2F"></a><a target="_blank" class="btn-facebook" href="https://www.facebook.com/share.php?u=http%3A%2F%2Fbacker-demo.krownthemes.com%2Fprojects%2Faudio-playlist%2F&amp;title=Audio+Playlist"></a><a target="_blank" class="btn-gplus" href="https://plus.google.com/share?url=http%3A%2F%2Fbacker-demo.krownthemes.com%2Fprojects%2Faudio-playlist%2F"></a><a id="share-embed" class="social-share"><i class="fa fa-code"></i></a>
+                  <div class="embed-box social-share" style="display: none;">
+                     <code>&lt;iframe frameBorder="0" scrolling="no" src="http://backer-demo.krownthemes.com/?ig_embed_widget=1&amp;product_no=" width="214" height="366"&gt;&lt;/iframe&gt;</code>
+                  </div>
+               </div>
+            </aside>
+            <p>&nbsp;</p>
+            <p> <?= $crowd_funding_brand_description ?></p>
+         </div>
+      </div>      
+   </div>
+   <aside id="project-sidebar" style="height: auto;">
+      <div class="rtitle">
+         <div class="krown-pie small" data-color="#43b3cf">
+            <div class="holder">
+               <span class="value" data-percent="<?=$crowd_funding_brand_percent ?>"><?=$crowd_funding_brand_percent ?></span>
+               <div class="pie-holder">
+                  <canvas class="pie-canvas" width="122" height="122"></canvas>
+               </div>
+               <div class="pie-holder">
+                  <canvas class="pie-canvas" width="122" height="122"></canvas>
+               </div>
+            </div>
+         </div>
+         <p>Back this Project</p>
+      </div>
+      <div class="id-widget-wrap nofloat">
+         <div class="id-widget id-full" data-projectid="12">
+            <div class="id-product-infobox">
+               <div class="panel clearfix">
+                  <div class="product-wrapper clearfix">
+                     <div class="pledge">
+                        <h2 class="id-product-title"><a href="http://backer-demo.krownthemes.com/projects/audio-playlist">Audio Playlist</a></h2>
+                        <div class="progress-wrapper">
+                           <div class="krown-pie large" data-color="#43b3cf">
+                              <div class="holder">
+                                 <span class="value" data-percent="<?=$crowd_funding_brand_percent ?>"><?=$crowd_funding_brand_percent ?></span>
+                                 <div class="pie-holder">
+                                    <canvas class="pie-canvas" width="274" height="274"></canvas>
+                                 </div>
+                                 <div class="pie-holder">
+                                    <canvas class="pie-canvas" width="274" height="274"></canvas>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!-- end progress wrapper --> 
+                     </div>
+                     <!-- end pledge -->
+                     <div class="clearing"></div>
+                     <div class="rholder">
+                        <div class="rpdata">
+                           <div class="id-progress-raised"> $ <?= number_format($crowd_funding_brand_goal, 2)?> </div>
+                           <div class="id-product-funding">Meta</div>
+                        </div>
+                        <div class="rpdata">
+                           <div class="id-product-total"> <?=$crowd_funding_brand_disacount ?>%</div>
+                           <div class="id-product-pledges">Descuento</div>
+                        </div>
+                        <div class="rpdata">
+                           <div class="id-product-days"><?= $crowd_funding_brand_restedTime ?></div>
+                           <div class="id-product-days-to-go">Días restantes</div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- end product-wrapper -->	
+               <!-- Project description -->
+               <div class="id-product-description">He lay on his armour-like back, and if he lifted his head a little he could see his brown belly.</div>
+               <!-- end id product description -->
+               <!--Product Levels-->
+               <!-- end product levels -->
+            </div>
+            <!-- end product-infobox -->
+         </div>
+         <!-- end id-widget -->
+      </div>
+      <!--if show author -->
+   </aside>
 </div>
-
-<!-- end pledge -->
-
-<div class="clearing"></div>
-<div class="rholder"><div class="rpdata"><div class="id-progress-raised"> $<?= $raised ?> </div><div class="id-product-funding">Pledged of <?= $crowd_funding_price_goal ?> Goal</div></div><div class="rpdata"><div class="id-product-total"> <?= $num_pledgers ?></div><div class="id-product-pledges">Pledgers</div></div></div>
-
-
-
-</div><div class="id-product-proposed-end">Ended on <div class="id-widget-date">
-<div class="id-widget-month"> <?= $month_end ?></div>
-<div class="id-widget-day"> <?= $day_end ?></div>
-<div class="id-widget-year"><?= $year_end ?></div>
-</div>
-</div><div class="btn-container" style="display: block;">
-<a href=".idc_lightbox" class="main-btn krown-button medium color">Support Now</a>
-</div></div>
-
-<!-- end product-wrapper -->	
-
-<!--
-<div class="separator">&nbsp;<div id="project-p-author" class="panel clearfix">
-
-<div class="comment-avatar">
-<img alt="" src="http://2.gravatar.com/avatar/baec5328cff79443a8de1baa0870bfa8?s=65&amp;d=mm&amp;r=g" srcset="http://2.gravatar.com/avatar/baec5328cff79443a8de1baa0870bfa8?s=130&amp;d=mm&amp;r=g 2x" class="avatar avatar-65 photo" height="65" width="65" pagespeed_url_hash="29549993" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">	</div>
-
-<div class="comment-content">
-
-<span>Project by</span>
-
-<h6>Diego Ventura</h6>
-
-<ul class="author-meta">
-
-<li>1 Project</li>
--->

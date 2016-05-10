@@ -51,6 +51,15 @@ class BrandHelper {
 	
 	public function getGoal( $brandId ) {
 		return get_woocommerce_term_meta( $brandId, 'crowd_funding_goal' );
+	}    
+    
+	public function getDiscount( $brandId ) {
+		return get_woocommerce_term_meta( $brandId, 'crowd_funding_discount' );
+	}
+    
+    
+	public function getDescription( $brandId ) {
+		return  get_woocommerce_term_meta( $brandId, 'description', true );
 	}
 	
 	public function getTimeLeft( $brandId ) {
@@ -103,9 +112,18 @@ class BrandHelper {
                 )
             );            
         } 
+    }
+    
+    public function getImageSrc( $brandId ) {        
+				
+		$thumbnail_id = get_woocommerce_term_meta( $brandId, 'thumbnail_id', true );
+		$image = wp_get_attachment_thumb_url( $thumbnail_id );
+		
+		$image = str_replace( ' ', '%20', $image );
+		$image = str_replace( '-150x150', '', $image );
+		$image = esc_url( $image );	
         
-		
-		
+        return $image;	
     }
     
 }
