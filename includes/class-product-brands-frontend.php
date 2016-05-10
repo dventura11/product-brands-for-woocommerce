@@ -5,6 +5,7 @@ if ( ! defined( 'WPINC' ) ) { die; }
 class Product_Brands_For_WooCommerce_FrontEnd {
 	public function __construct(){        
         add_action( 'woocommerce_after_shop_loop_item', array( $this, 'display_crowdfunding_item_info' ) );
+		add_filter( 'woocommerce_page_title', array($this, 'display_crowdfunding_brand_info'));
 		add_shortcode('pbf_wc' , array($this,'manage_shortcode'));
 		add_shortcode('pbf_wc_list' , array($this,'manage_list_shortcode'));
 		add_shortcode('pbf_wc_grid' , array($this,'manage_grid_shortcode'));
@@ -209,7 +210,45 @@ class Product_Brands_For_WooCommerce_FrontEnd {
             untrailingslashit( plugin_dir_path( dirname( __FILE__ ) ) ) . '/templates/' 
         );
                 
-    }    
+    }
+    
+    /**
+    * Adds brand crowdfunding information
+    **/
+    function display_crowdfunding_brand_info($title) {
+
+        global $product;
+        
+        $term = get_terms( array(
+            'taxonomy' => 'product_brands',
+            'hide_empty' => false,
+        ) )[0];
+
+        //$brandHelper = new BrandHelper();
+        //$brand = get_term_by('name', $title,'product-brands');
+        
+
+        $crowd_funding_goal = $brandHelper->getGoal( $brand->term_id );
+
+        $crowd_funding_discount = get_woocommerce_term_meta( $term->term_id, 'crowd_funding_discount' );        
+        $priceGoal = $product->price;
+		$priceGoal -= $product->price * ($crowd_funding_discount/100);		
+        wc_get_template( 'crowdfunding-brand-info.php',
+            array (
+                'crowd_funding_brand_title' => $title,
+                //'crowd_funding_price_goal' =>
+                //'percent' =>
+                //'raised' =>
+                //'num_pledgers' =>
+                //'month_end' =>
+                //'day_end' =>
+                //'year_end' =>
+            ),
+            'woocommerce/product_brands' ,
+            untrailingslashit( plugin_dir_path( dirname( __FILE__ ) ) ) . '/templates/' 
+        );
+                
+    }
     
 }
 ?>
