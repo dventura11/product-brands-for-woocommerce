@@ -228,7 +228,7 @@ class Product_Brands_For_WooCommerce_FrontEnd {
         //$brand = get_term_by('name', $title,'product-brands');
         
 
-        $crowd_funding_goal = $brandHelper->getGoal( $brand->term_id );
+        //$crowd_funding_goal = $brandHelper->getGoal( $brand->term_id );
 
         $crowd_funding_discount = get_woocommerce_term_meta( $term->term_id, 'crowd_funding_discount' );        
         $priceGoal = $product->price;
