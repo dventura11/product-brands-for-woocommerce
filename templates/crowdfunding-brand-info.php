@@ -14,9 +14,9 @@
             <aside class="share-buttons clearfix">
                <p>Share this project</p>
                <div class="holder clearfix">
-                  <a target="_blank" class="btn-twitter" href="https://twitter.com/home?status=<?= $url ?>"></a>
-                  <a target="_blank" class="btn-facebook" href="https://www.facebook.com/share.php?u=<?= $url ?>"></a>
-                  <a target="_blank" class="btn-gplus" href="https://plus.google.com/share?url=<?= $url ?>"></a>
+                  <a target="_blank" class="btn-twitter" href="https://twitter.com/home?status=<?= $_SERVER['REQUEST_URI'] ?>"></a>
+                  <a target="_blank" class="btn-facebook" href="https://www.facebook.com/share.php?u=<?= $_SERVER['REQUEST_URI'] ?>"></a>
+                  <a target="_blank" class="btn-gplus" href="https://plus.google.com/share?url=<?= $_SERVER['REQUEST_URI'] ?>"></a>
                   <a id="share-embed" class="social-share"><i class="fa fa-code"></i></a>
                   <div class="embed-box social-share" style="display: none;">
                      <code>&lt;iframe frameBorder="0" scrolling="no" src="http://backer-demo.krownthemes.com/?ig_embed_widget=1&amp;product_no=" width="214" height="366"&gt;&lt;/iframe&gt;</code>
