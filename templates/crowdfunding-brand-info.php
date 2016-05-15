@@ -14,7 +14,10 @@
             <aside class="share-buttons clearfix">
                <p>Share this project</p>
                <div class="holder clearfix">
-                  <a target="_blank" class="btn-twitter" href="https://twitter.com/home?status=Audio+Playlist+http%3A%2F%2Fbacker-demo.krownthemes.com%2Fprojects%2Faudio-playlist%2F"></a><a target="_blank" class="btn-facebook" href="https://www.facebook.com/share.php?u=http%3A%2F%2Fbacker-demo.krownthemes.com%2Fprojects%2Faudio-playlist%2F&amp;title=Audio+Playlist"></a><a target="_blank" class="btn-gplus" href="https://plus.google.com/share?url=http%3A%2F%2Fbacker-demo.krownthemes.com%2Fprojects%2Faudio-playlist%2F"></a><a id="share-embed" class="social-share"><i class="fa fa-code"></i></a>
+                  <a target="_blank" class="btn-twitter" href="https://twitter.com/home?status=<?= $url ?>"></a>
+                  <a target="_blank" class="btn-facebook" href="https://www.facebook.com/share.php?u=<?= $url ?>"></a>
+                  <a target="_blank" class="btn-gplus" href="https://plus.google.com/share?url=<?= $url ?>"></a>
+                  <a id="share-embed" class="social-share"><i class="fa fa-code"></i></a>
                   <div class="embed-box social-share" style="display: none;">
                      <code>&lt;iframe frameBorder="0" scrolling="no" src="http://backer-demo.krownthemes.com/?ig_embed_widget=1&amp;product_no=" width="214" height="366"&gt;&lt;/iframe&gt;</code>
                   </div>

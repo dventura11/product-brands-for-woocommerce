@@ -235,6 +235,7 @@ class Product_Brands_For_WooCommerce_FrontEnd {
 		$percent = $brand->getPercent();
 		$disacount = $brand->getDiscount();				
         $restedTime = $brand->getTimeLeft();
+		$url = $_SERVER['REQUEST_URI'];
 								
         wc_get_template( 'crowdfunding-brand-info.php',
             array (
@@ -242,6 +243,7 @@ class Product_Brands_For_WooCommerce_FrontEnd {
                 'crowd_funding_brand_description' => $description,
 				'crowd_funding_brand_image' => $image,
 				'crowd_funding_brand_goal' => $goal,
+				'url' => $url,
 				'crowd_funding_brand_percent' => $percent,
 				'crowd_funding_brand_disacount' => $disacount,
 				'crowd_funding_brand_restedTime' => $restedTime
