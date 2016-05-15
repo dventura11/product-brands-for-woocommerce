@@ -6,7 +6,7 @@
 <div class="contents clearfix autop"><div style="display: block;"> 
     <div class="krown-id-grid default clearfix" id="ign-1753" style="position: relative; height: 434px;">
                 
-	<?php foreach ( $brands as $index => $brand ) : 
+	<?php foreach ( $brands as $index => $brand ) :    
 		
 		$thumbnail = $image_size;
 
@@ -16,16 +16,16 @@
 
 		if ( ! $thumbnail ) $thumbnail = woocommerce_placeholder_img_src();    
                 
-        $brandHelper = new BrandHelper();
-        $crowd_funding_goal = $brandHelper->getGoal( $brand->term_id );
-        $percent = $brandHelper->getPercent( $brand->term_id );
-        $restedTime = $brandHelper->getTimeLeft( $brand->term_id );
+        $brandHelper = new Brand( $brand->term_id );
+        $crowd_funding_goal = $brandHelper->getGoal();
+        $percent = $brandHelper->getPercent();
+        $restedTime = $brandHelper->getTimeLeft();
 		            
         ?>
         
         <article class="krown-id-item" style="position: absolute; left: 0px; top: 0px;">
 
-            <a class="fancybox-thumb" href="product_brands/<?= $brand->name ?>">
+            <a class="fancybox-thumb" href="product_brands/<?= $brand->slug ?>">
                 <figure class="img">                    
                     <?= $image_url ?>
                 </figure>
@@ -33,7 +33,7 @@
             </a>
             <div class="container">
 
-                <a href="product_brands/<?= $brand->name ?>">
+                <a href="product_brands/<?= $brand->slug ?>">
                     <h3 class="title"><?= $brand->name ?></h3>
                 </a>
 

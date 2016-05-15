@@ -6,7 +6,7 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 	public function __construct(){
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
-		add_action( 'wp_ajax_apply_discount', 'applyDiscount' );
+		add_action( 'wp_ajax_crowdfunding_apply_discount', array( $this, 'applyDiscount' ) );
 		add_filter( 'manage_edit-product_brands_columns', array( $this, 'product_cat_columns' ) );
 		add_filter( 'manage_product_brands_custom_column', array( $this, 'product_cat_column' ), 10, 3 );
 		add_action( 'product_brands_add_form_fields', array( $this, 'add_category_fields' ) );
@@ -192,8 +192,8 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 		$end_crowd_funding_time = get_woocommerce_term_meta( $term->term_id, 'end_crowd_funding_time' );
 		$crowd_funding_discount = get_woocommerce_term_meta( $term->term_id, 'crowd_funding_discount' );
 		
-		$brandHelper = new BrandHelper();
-        $restedTime = $brandHelper->getTimeLeft( $term->term_id );		
+		$brand = new Brand( $term->term_id );
+        $restedTime = $brand->getTimeLeft();		
 		                       
 		if ( $thumbnail_id ) {
 			$image = wp_get_attachment_thumb_url( $thumbnail_id );
@@ -280,40 +280,79 @@ class Product_Brands_For_WooCommerce_Admin_Function {
 			</td>
 		</tr>
 		
-		<?php if ( $restedTime == 0 ) { ?>	
-		
-			<tr class="form-field">            
-				<th scope="row" valign="top">
-				<label><?php _e( 'Apply Discount', PBF_WC_TXT ); ?></label>
-				</td><td>
-					<input type="checkbox" id="crowd_funding_apply_discount" name="crowd_funding_apply_discount"/>
-				</td>
-			</tr>
+		<?php if ( $restedTime == 0 ) { ?>		
 			
-			<!--
-			<tr class="form-field">
+			<tr>
 				<td>
 					<p class="submit">
 						<input onclick="callApplyDiscount();"; type="button" name="applyDiscount" id="applyDiscount" class="button button-primary" value="Aplicar descuento">
 					</p>
-					
+					<div id="resumeContent">
+						<table class="wp-list-table widefat fixed striped posts" id="resumeTable">
+							<thead>
+								<tr>
+									<th scope="col" id="order_id" class="manage-column column-order_total sortable desc">
+										order
+									</th>
+									<th scope="col" id="product_id" class="manage-column column-order_total sortable desc">
+										Product
+									</th>
+									<th scope="col" id="product_name" class="manage-column column-order_total sortable desc">
+										Product Name
+									</th>
+									<th scope="col" id="product_quantity" class="manage-column column-order_total sortable desc">
+										Quantity
+									</th>
+									<th scope="col" id="product_subtotal" class="manage-column column-order_total sortable desc">
+										Subtotal
+									</th>
+									<th scope="col" id="product_total" class="manage-column column-order_total sortable desc">
+										Total
+									</th>
+									<th scope="col" id="product_discount" class="manage-column column-order_total sortable desc">
+										Discount
+									</th>
+								</tr>
+							</thead>
+							<tbody id="the-list">
+								
+							</tbody>
+						</table>
+					</div>
 					<script type="text/javascript" >
+					
+						jQuery("#resumeContent").hide();
 						function callApplyDiscount() {
 							jQuery.post(
 								ajaxurl, 
 								{
-									'action': 'apply_discount',
-									'data':   'foobarid'
+									'action': 'crowdfunding_apply_discount',
+									'brand_id': <?= $term->term_id ?>   
 								}, 
 								function(response){
-									alert('The server responded: ' + response);
+									
+									jQuery(".form-field").hide();
+									jQuery("#resumeContent").show();
+									var data = jQuery.parseJSON(response);
+														
+									data.products.forEach(function(product) {
+										tr = '<tr>';
+										tr += '<td><a href="post.php?post='+product.orderId+'&action=edit">'+product.orderId+'</a></td>';
+										tr += '<td><a href="post.php?post='+product.productId+'&action=edit">'+product.productId+'</a></td>';
+										tr += '<td>'+product.productName+'</td>';
+										tr += '<td>'+product.quantity+'</td>';
+										tr += '<td>$'+product.original_total+'</td>';
+										tr += '<td>$'+product.discount+'</td>';
+										tr += '<td>$'+product.total+'</td>';		
+										tr += '</tr>';
+										jQuery('#resumeTable > tbody:last-child').append(tr);
+									});
 								}
 							);
 						}
 					</script>			
 				</td>
 			</tr>
-			-->
 		<?php } 
 	}
 	
@@ -355,9 +394,12 @@ class Product_Brands_For_WooCommerce_Admin_Function {
         
 	}
 
-	public function applyDiscount( $term_id ) {
-		$brandHelper = new BrandHelper();
-		$brandHelper->applyDiscount( $term_id );
+	public function applyDiscount() {		
+		$term_id = $_POST['brand_id'];
+		$brand = new Brand($term_id);
+		$result = $brand->applyDiscount();
+		echo json_encode($result);
+		wp_die();
 	}	
 }
 ?>

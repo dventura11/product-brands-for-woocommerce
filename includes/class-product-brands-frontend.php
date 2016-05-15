@@ -219,20 +219,22 @@ class Product_Brands_For_WooCommerce_FrontEnd {
 
         global $product;
         
-        $brand = get_terms( array(
+        $brandInfo = get_terms( array(
             'taxonomy' => 'product_brands',
-            'hide_empty' => false,
+			'name' => $title,
+            'hide_empty' => false
+			
         ) )[0];
 
-        $brandHelper = new BrandHelper();        
+        $brand = new Brand( $brandInfo->term_id);        
 
-        $crowd_funding_goal = $brandHelper->getGoal( $brand->term_id );
-        $description = $brandHelper->getDescription( $brand->term_id );		
-        $image = $brandHelper->getImageSrc( $brand->term_id );
-        $goal = $brandHelper->getGoal( $brand->term_id );
-		$percent = $brandHelper->getPercent( $brand->term_id );
-		$disacount = $brandHelper->getDiscount( $brand->term_id );				
-        $restedTime = $brandHelper->getTimeLeft( $brand->term_id );
+        $crowd_funding_goal = $brand->getGoal();
+        $description = $brand->getDescription();		
+        $image = $brand->getImageSrc();
+        $goal = $brand->getGoal();
+		$percent = $brand->getPercent();
+		$disacount = $brand->getDiscount();				
+        $restedTime = $brand->getTimeLeft();
 								
         wc_get_template( 'crowdfunding-brand-info.php',
             array (
@@ -246,9 +248,7 @@ class Product_Brands_For_WooCommerce_FrontEnd {
             ),
             'woocommerce/product_brands' ,
             untrailingslashit( plugin_dir_path( dirname( __FILE__ ) ) ) . '/templates/' 
-        );
-                
+        );			   
     }
-    
 }
 ?>
